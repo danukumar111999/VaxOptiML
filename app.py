@@ -637,6 +637,7 @@ def main():
                     df = df.explode('Epitope').explode('HLA').explode('Start').explode('End')
                     df.reset_index(drop=True, inplace=True)
                     print(df)
+                    st.write("......Analysis completed....")
                     st.write(df)
 
             elif prediction_option== "MHC-2" and text_input:
@@ -1225,6 +1226,7 @@ def main():
                     df = df.explode('Epitope').explode('HLA').explode('Start').explode('End')
                     df.reset_index(drop=True, inplace=True)
                     print(df)
+                    st.write("......Analysis completed....")
                     st.write(df)
 
             elif prediction_option=='BOTH' and text_input:
@@ -1813,6 +1815,7 @@ def main():
                     df = df.explode('Epitope').explode('HLA').explode('Start').explode('End')
                     df.reset_index(drop=True, inplace=True)
                     print(df)
+                    st.write("......Analysis completed....")
                     st.write(df)
 
                 progress_bar = st.progress(0)
@@ -2401,6 +2404,7 @@ def main():
                     df = df.explode('Epitope').explode('HLA').explode('Start').explode('End')
                     df.reset_index(drop=True, inplace=True)
                     print(df)
+                    st.write("......Analysis completed....")
                     st.write(df)
 
     elif page == "About":
