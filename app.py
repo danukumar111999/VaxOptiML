@@ -15,6 +15,15 @@ from sklearn.ensemble import RandomForestRegressor, HistGradientBoostingRegresso
 from lightgbm import LGBMRegressor
 import joblib
 import time
+import base64
+
+def convert_df_to_csv(df):
+    return df.to_csv(index=False).encode('utf-8')
+
+# Function to create a download link
+def create_download_link(data, filename, mime):
+    b64 = base64.b64encode(data).decode()
+    return f'<a href="data:{mime};base64,{b64}" download="{filename}">Download {filename}</a>'
 
 page = st.sidebar.radio("Choose a page", ["Home", "About", "Help"])
 st.title("VaxOptiML")
@@ -308,6 +317,9 @@ def main():
                 df_d = pd.read_csv(file_name)
                 st.header("The epitope information")
                 st.dataframe(df_d)
+                csv_dt = convert_df_to_csv(df_d)
+                csv_lnk = create_download_link(csv_dt, "Epitope_information.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
 
                 pro = []
                 for i in range(len(epi)):
@@ -320,6 +332,10 @@ def main():
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
                 st.dataframe(df_d1)
+
+                csv_dt = convert_df_to_csv(df_d1)
+                csv_lnk = create_download_link(csv_dt, "Protein_sequence_information.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
 
                 df1 = pd.read_csv('epitopes_results.csv')
                 df2 = pd.read_csv('p_Sequence.csv')
@@ -537,6 +553,9 @@ def main():
                 score = pd.read_csv('final_output.csv')
                 st.header("The Machine Learning Classifier results")
                 st.dataframe(score)
+                csv_dt = convert_df_to_csv(score)
+                csv_lnk = create_download_link(csv_dt, "ML_classification_output.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
 
                 print(score['Random_forest_Target'].values)
                 print(score['Extra_tree_Target'].values)
@@ -604,11 +623,13 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values','KOLASKAR_SCORE']
+                    st.header('Final Predicted Cancer Epitopes')
                     st.write("ANALYSIS COMPLETED")
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
-                    st.header('Final Predicted Cancer Epitopes')
                     st.dataframe(df_tab[col])
-                    
+                    csv_d = convert_df_to_csv(df_tab[col])
+                    c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
+                    st.markdown(c_lnk, unsafe_allow_html=True)
                 else:
                     values = df_d3['KOLASKAR_SCORE'].sort_values(ascending=False).values
                     val = []
@@ -640,10 +661,14 @@ def main():
                     df_l = df_l.explode('Epitope').explode('HLA').explode('Start').explode('End').explode('Kolaskar_score')
                     df_l.reset_index(drop=True, inplace=True)
                     print(df_l)
+                    st.header('Final Predicted Cancer Epitopes')
                     st.write("ANALYSIS COMPLETED")
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
-                    st.header('Final Predicted Cancer Epitopes')
                     st.dataframe(df_l)
+                    df_l.to_csv("final_epi.csv")
+                    csv_d = convert_df_to_csv(df_tar)
+                    c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
+                    st.markdown(c_lnk, unsafe_allow_html=True)
                     
 
             elif prediction_option == "MHC-2" and text_input:
@@ -900,6 +925,10 @@ def main():
                 st.header("The epitope information")
                 st.dataframe(df_d)
 
+                csv_dt = convert_df_to_csv(df_d)
+                csv_lnk = create_download_link(csv_dt, "Epitope_information.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
+
                 pro = []
                 for i in range(len(epi)):
                     r_result = p_process_single_protein(protein_sequence)
@@ -911,6 +940,10 @@ def main():
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
                 st.dataframe(df_d1)
+
+                csv_dt = convert_df_to_csv(df_d1)
+                csv_lnk = create_download_link(csv_dt, "Protein_sequence_information.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
 
                 df1 = pd.read_csv('epitopes_results.csv')
                 df2 = pd.read_csv('p_Sequence.csv')
@@ -1128,6 +1161,9 @@ def main():
                 score = pd.read_csv('final_output.csv')
                 st.header("The Machine Learning Classifier results")
                 st.write(score)
+                csv_dt = convert_df_to_csv(score)
+                csv_lnk = create_download_link(csv_dt, "ML_Classification_output.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
 
                 print(score['Random_forest_Target'].values)
                 print(score['Extra_tree_Target'].values)
@@ -1194,10 +1230,13 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values','KOLASKAR_SCORE']
+                    st.header('Final Predicted Cancer Epitopes')
                     st.write("ANALYSIS COMPLETED")
                     st.write("These final epitopes are generated with at least 2 of the models predicted them as epitopes")
-                    st.header("Final Predicted Cancer Epitopes")
                     st.dataframe(df_tab[col])
+                    csv_d=convert_df_to_csv(df_tab[col])
+                    c_lnk=create_download_link(csv_d,"final_epitopes.csv","text/csv")
+                    st.markdown(c_lnk,unsafe_allow_html=True)
                     
                 else:
                     values = df_d3['KOLASKAR_SCORE'].sort_values(ascending=False).values
@@ -1230,13 +1269,16 @@ def main():
                     df_l = df_l.explode('Epitope').explode('HLA').explode('Start').explode('End').explode('Kolaskar_score')
                     df_l.reset_index(drop=True, inplace=True)
                     print(df)
+                    st.header('Final Predicted Cancer Epitopes')
                     st.write("ANALYSIS COMPLETED")
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
                     st.write("Final Predicted Cancer Epitopes")
                     st.dataframe(df_l)
+                    df_csv=convert_df_to_csv(df_l)
+                    c_d_l=create_download_link(df_csv,'final_epitopes.csv',"text/csv")
+                    st.markdown(c_d_l,unsafe_allow_html=True)
                     
             elif prediction_option == 'BOTH' and text_input:
-
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
@@ -1490,6 +1532,10 @@ def main():
                 st.header("The epitope information")
                 st.dataframe(df_d)
 
+                csv_dt = convert_df_to_csv(df_d)
+                csv_lnk = create_download_link(csv_dt, "Epitope_information.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
+
                 pro = []
                 for i in range(len(epi)):
                     r_result = p_process_single_protein(protein_sequence)
@@ -1501,6 +1547,10 @@ def main():
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
                 st.dataframe(df_d1)
+
+                csv_dt = convert_df_to_csv(df_d1)
+                csv_lnk = create_download_link(csv_dt, "Protein_Sequence_information.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
 
                 df1 = pd.read_csv('epitopes_results.csv')
                 df2 = pd.read_csv('p_Sequence.csv')
@@ -1719,6 +1769,9 @@ def main():
                 score = pd.read_csv('final_output.csv')
                 st.header("The Machine Learning Classifier results")
                 st.dataframe(score)
+                csv_dt = convert_df_to_csv(score)
+                csv_lnk = create_download_link(csv_dt, "ML_Classification_output.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
 
                 print(score['Random_forest_Target'].values)
                 print(score['Extra_tree_Target'].values)
@@ -1786,10 +1839,13 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values','KOLASKAR_SCORE']
+                    st.header('Final Predicted Cancer Epitopes for MHC-1')
                     st.write("ANALYSIS COMPLETED")
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
-                    st.header('Final Predicted Cancer Epitopes')
                     st.dataframe(df_tab[col])
+                    csv_d = convert_df_to_csv(df_tab[col])
+                    c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
+                    st.markdown(c_lnk, unsafe_allow_html=True)
                     
                 else:
                     values = df_d3['KOLASKAR_SCORE'].sort_values(ascending=False).values
@@ -1823,13 +1879,13 @@ def main():
                     df_1 = df_1.explode('Epitope').explode('HLA').explode('Start').explode('End').explode("Kolaskar_score")
                     df_1.reset_index(drop=True, inplace=True)
                     print(df_1)
+                    st.header("Final Predicted Cancer Epitopes for MHC-1")
                     st.write("ANALYSIS COMPLETED")
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
-                    st.header("Final Predicted Cancer Epitopes")
                     st.dataframe(df_1)
-                    st.download_button(label="Final Cancer Epitopes",
-                                       data=df_1)
-
+                    csv_lk=convert_df_to_csv(df_1)
+                    csv_l=create_download_link(csv_lk,'final_epitopes.csv',"text/csv")
+                    st.markdown(csv_l,unsafe_allow_html=True)
 
                 status_text = st.empty()
                 for i in range(6):
@@ -2084,6 +2140,10 @@ def main():
                 st.header("The epitope information")
                 st.dataframe(df_d)
 
+                csv_dt = convert_df_to_csv(df_d)
+                csv_lnk = create_download_link(csv_dt, "Epitope_information.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
+
                 pro = []
                 for i in range(len(epi)):
                     r_result = p_process_single_protein(protein_sequence)
@@ -2095,6 +2155,11 @@ def main():
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
                 st.dataframe(df_d1)
+
+                csv_dt = convert_df_to_csv(df_d1)
+                csv_lnk = create_download_link(csv_dt, "Protein_sequence_information.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
+
 
                 df1 = pd.read_csv('epitopes_results.csv')
                 df2 = pd.read_csv('p_Sequence.csv')
@@ -2312,6 +2377,9 @@ def main():
                 score = pd.read_csv('final_output.csv')
                 st.header("Machine Learning Classifier Results")
                 st.dataframe(score)
+                csv_dt = convert_df_to_csv(score)
+                csv_lnk = create_download_link(csv_dt, "ML_Classification_output.csv", "text/csv")
+                st.markdown(csv_lnk, unsafe_allow_html=True)
 
                 print(score['Random_forest_Target'].values)
                 print(score['Extra_tree_Target'].values)
@@ -2379,10 +2447,13 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values','KOLASKAR_SCORE']
+                    st.header("Final Predicted Cancer Epitopes for MHC-2")
                     st.write("ANALYSIS COMPLETED")
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
-                    st.header("Final Predicted Cancer Epitopes")
                     st.dataframe(df_tab[col])
+                    csv_dt=convert_df_to_csv(df_tab[col])
+                    csv_lnk=create_download_link(csv_dt,"final_epitopes.csv","text/csv")
+                    st.markdown(csv_lnk,unsafe_allow_html=True)
                     
                 else:
                     values = df_d3['KOLASKAR_SCORE'].sort_values(ascending=False).values
@@ -2415,10 +2486,14 @@ def main():
                     df_l = df_l.explode('Epitope').explode('HLA').explode('Start').explode('End').explode('kolaskar_score')
                     df_l.reset_index(drop=True, inplace=True)
                     print(df)
+                    st.header("Final Predicted Cancer Epitopes for MHC-2")
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
                     st.write("Final predicted Cancer Epitopes")
                     st.write("ANALYSIS COMPLETED")
                     st.dataframe(df_l)
+                    csv_data=convert_df_to_csv(df_l)
+                    csv_link=create_download_link(csv_data,"final_epitopes.csv","text/csv")
+                    st.markdown(csv_link,unsafe_allow_html=True)
 
     elif page == "About":
         st.title("About Us")
