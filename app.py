@@ -307,7 +307,7 @@ def main():
                 df.to_csv(file_name)
                 df_d = pd.read_csv(file_name)
                 st.header("The epitope information")
-                st.write(df_d)
+                st.dataframe(df_d)
 
                 pro = []
                 for i in range(len(epi)):
@@ -319,17 +319,15 @@ def main():
                 df_p.to_csv(file_name)
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
-                st.write(df_d1)
+                st.dataframe(df_d1)
 
                 df1 = pd.read_csv('epitopes_results.csv')
                 df2 = pd.read_csv('p_Sequence.csv')
                 merged_df = pd.merge(df1, df2, how='inner')
                 merged_df.to_csv('result.csv', index=False)
                 print("Merged CSV file has been created.")
-
                 final_res = pd.read_csv('result.csv')
-                st.header('The CSV with epitope information')
-                st.write(final_res)
+
 
                 inps = ['start', 'end', 'R_Percent', 'D_Percent', 'Q_Percent', 'H_Percent',
                         'I_Percent', 'L_Percent',
@@ -355,8 +353,7 @@ def main():
                 random_forest_pred = []
                 df = pd.read_csv('extracted_columns.csv')
                 print(df.columns)
-                st.header("The extracted Columns")
-                st.write(df)
+
                 for i in range(len(df)):
                     print(df.end.values[i])
                     print(
@@ -471,8 +468,6 @@ def main():
 
                 kolaskar_df.to_csv('kolaskar.csv')
                 df_kolaskar = pd.read_csv("kolaskar.csv")
-                st.header('The Kolaskar score information')
-                st.write(df_kolaskar)
 
                 def protein_to_numerical(sequence):
                     if isinstance(sequence, str):
@@ -540,8 +535,8 @@ def main():
 
                 score_df.to_csv("final_output.csv")
                 score = pd.read_csv('final_output.csv')
-                st.header("The File with score and values")
-                st.write(score)
+                st.header("The Machine Learning Classifier results")
+                st.dataframe(score)
 
                 print(score['Random_forest_Target'].values)
                 print(score['Extra_tree_Target'].values)
@@ -609,10 +604,11 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values','KOLASKAR_SCORE']
-                    st.write("......Analysis completed....")
-                    st.write('...These final epitopes are generated with at least 2 of the models predicted them as epitopes....')
-                    st.header('Final predicted epitopes')
-                    st.table(df_tab[col])
+                    st.write("ANALYSIS COMPLETED")
+                    st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.header('Final Predicted Cancer Epitopes')
+                    st.dataframe(df_tab[col])
+                    
                 else:
                     values = df_d3['KOLASKAR_SCORE'].sort_values(ascending=False).values
                     val = []
@@ -640,17 +636,17 @@ def main():
                         'End': ends,
                         'Kolaskar_score':score
                     }
-                    df = pd.DataFrame(data_dict)
-                    df = df.explode('Epitope').explode('HLA').explode('Start').explode('End').explode('Kolaskar_score')
-                    df.reset_index(drop=True, inplace=True)
-                    print(df)
-                    st.write("......Analysis completed....")
-                    st.write('..These final epitopes are generated with at least 2 of the models predicted them as epitopes...')
-                    st.header('Final Predicted Epitopes')
-                    st.write(df)
+                    df_l = pd.DataFrame(data_dict)
+                    df_l = df_l.explode('Epitope').explode('HLA').explode('Start').explode('End').explode('Kolaskar_score')
+                    df_l.reset_index(drop=True, inplace=True)
+                    print(df_l)
+                    st.write("ANALYSIS COMPLETED")
+                    st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.header('Final Predicted Cancer Epitopes')
+                    st.dataframe(df_l)
+                    
 
             elif prediction_option == "MHC-2" and text_input:
-                progress_bar = st.progress(0)
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
@@ -902,7 +898,7 @@ def main():
                 df.to_csv(file_name)
                 df_d = pd.read_csv(file_name)
                 st.header("The epitope information")
-                st.write(df_d)
+                st.dataframe(df_d)
 
                 pro = []
                 for i in range(len(epi)):
@@ -914,7 +910,7 @@ def main():
                 df_p.to_csv(file_name)
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
-                st.write(df_d1)
+                st.dataframe(df_d1)
 
                 df1 = pd.read_csv('epitopes_results.csv')
                 df2 = pd.read_csv('p_Sequence.csv')
@@ -923,8 +919,6 @@ def main():
                 print("Merged CSV file has been created.")
 
                 final_res = pd.read_csv('result.csv')
-                st.header('The CSV with epitope information')
-                st.write(final_res)
 
                 inps = ['start', 'end', 'R_Percent', 'D_Percent', 'Q_Percent', 'H_Percent',
                         'I_Percent', 'L_Percent',
@@ -950,8 +944,7 @@ def main():
                 random_forest_pred = []
                 df = pd.read_csv('extracted_columns.csv')
                 print(df.columns)
-                st.header("The extracted Columns")
-                st.write(df)
+
                 for i in range(len(df)):
                     print(df.end.values[i])
                     print(
@@ -1066,8 +1059,6 @@ def main():
 
                 kolaskar_df.to_csv('kolaskar.csv')
                 df_kolaskar = pd.read_csv("kolaskar.csv")
-                st.header('The Kolaskar score information')
-                st.write(df_kolaskar)
 
                 def protein_to_numerical(sequence):
                     if isinstance(sequence, str):
@@ -1135,7 +1126,7 @@ def main():
 
                 score_df.to_csv("final_output.csv")
                 score = pd.read_csv('final_output.csv')
-                st.header("The File with score and values")
+                st.header("The Machine Learning Classifier results")
                 st.write(score)
 
                 print(score['Random_forest_Target'].values)
@@ -1203,10 +1194,11 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values','KOLASKAR_SCORE']
-                    st.write("......Analysis completed....")
-                    st.write("..These final epitopes are generated with at least 2 of the models predicted them as epitopes...")
-                    st.header("Final predicted Epitopes")
-                    st.table(df_tab[col])
+                    st.write("ANALYSIS COMPLETED")
+                    st.write("These final epitopes are generated with at least 2 of the models predicted them as epitopes")
+                    st.header("Final Predicted Cancer Epitopes")
+                    st.dataframe(df_tab[col])
+                    
                 else:
                     values = df_d3['KOLASKAR_SCORE'].sort_values(ascending=False).values
                     val = []
@@ -1234,15 +1226,15 @@ def main():
                         'End': ends,
                         'Kolaskar_score':score
                     }
-                    df = pd.DataFrame(data_dict)
-                    df = df.explode('Epitope').explode('HLA').explode('Start').explode('End').explode('Kolaskar_score')
-                    df.reset_index(drop=True, inplace=True)
+                    df_l = pd.DataFrame(data_dict)
+                    df_l = df_l.explode('Epitope').explode('HLA').explode('Start').explode('End').explode('Kolaskar_score')
+                    df_l.reset_index(drop=True, inplace=True)
                     print(df)
-                    st.write("......Analysis completed....")
-                    st.write('..These final epitopes are generated with at least 2 of the models predicted them as epitopes...')
-                    st.write("Final Predicted Epitopes")
-                    st.write(df)
-
+                    st.write("ANALYSIS COMPLETED")
+                    st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.write("Final Predicted Cancer Epitopes")
+                    st.dataframe(df_l)
+                    
             elif prediction_option == 'BOTH' and text_input:
 
                 status_text = st.empty()
@@ -1496,7 +1488,7 @@ def main():
                 df.to_csv(file_name)
                 df_d = pd.read_csv(file_name)
                 st.header("The epitope information")
-                st.write(df_d)
+                st.dataframe(df_d)
 
                 pro = []
                 for i in range(len(epi)):
@@ -1508,7 +1500,7 @@ def main():
                 df_p.to_csv(file_name)
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
-                st.write(df_d1)
+                st.dataframe(df_d1)
 
                 df1 = pd.read_csv('epitopes_results.csv')
                 df2 = pd.read_csv('p_Sequence.csv')
@@ -1517,8 +1509,6 @@ def main():
                 print("Merged CSV file has been created.")
 
                 final_res = pd.read_csv('result.csv')
-                st.header('The CSV with epitope information')
-                st.write(final_res)
 
                 inps = ['start', 'end', 'R_Percent', 'D_Percent', 'Q_Percent', 'H_Percent',
                         'I_Percent', 'L_Percent',
@@ -1544,8 +1534,7 @@ def main():
                 random_forest_pred = []
                 df = pd.read_csv('extracted_columns.csv')
                 print(df.columns)
-                st.header("The extracted Columns")
-                st.write(df)
+
                 for i in range(len(df)):
                     print(df.end.values[i])
                     print(
@@ -1660,8 +1649,7 @@ def main():
 
                 kolaskar_df.to_csv('kolaskar.csv')
                 df_kolaskar = pd.read_csv("kolaskar.csv")
-                st.header('The Kolaskar score information')
-                st.write(df_kolaskar)
+
 
                 def protein_to_numerical(sequence):
                     if isinstance(sequence, str):
@@ -1729,8 +1717,8 @@ def main():
 
                 score_df.to_csv("final_output.csv")
                 score = pd.read_csv('final_output.csv')
-                st.header("The File with score and values")
-                st.write(score)
+                st.header("The Machine Learning Classifier results")
+                st.dataframe(score)
 
                 print(score['Random_forest_Target'].values)
                 print(score['Extra_tree_Target'].values)
@@ -1798,10 +1786,11 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values','KOLASKAR_SCORE']
-                    st.write("......Analysis completed....")
-                    st.write('...These final epitopes are generated with at least 2 of the models predicted them as epitopes...')
-                    st.header('Final Predicted Epitopes')
-                    st.table(df_tab[col])
+                    st.write("ANALYSIS COMPLETED")
+                    st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.header('Final Predicted Cancer Epitopes')
+                    st.dataframe(df_tab[col])
+                    
                 else:
                     values = df_d3['KOLASKAR_SCORE'].sort_values(ascending=False).values
                     val = []
@@ -1830,14 +1819,16 @@ def main():
                         'End': ends,
                         "Kolaskar_score":score
                     }
-                    df = pd.DataFrame(data_dict)
-                    df = df.explode('Epitope').explode('HLA').explode('Start').explode('End').explode("Kolaskar_score")
-                    df.reset_index(drop=True, inplace=True)
-                    print(df)
-                    st.write("......Analysis completed....")
-                    st.write('...These final epitopes are generated with at least 2 of the models predicted them as epitopes...')
-                    st.header("Final Predicted Epitopes")
-                    st.write(df)
+                    df_1 = pd.DataFrame(data_dict)
+                    df_1 = df_1.explode('Epitope').explode('HLA').explode('Start').explode('End').explode("Kolaskar_score")
+                    df_1.reset_index(drop=True, inplace=True)
+                    print(df_1)
+                    st.write("ANALYSIS COMPLETED")
+                    st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.header("Final Predicted Cancer Epitopes")
+                    st.dataframe(df_1)
+                    st.download_button(label="Final Cancer Epitopes",
+                                       data=df_1)
 
 
                 status_text = st.empty()
@@ -2091,7 +2082,7 @@ def main():
                 df.to_csv(file_name)
                 df_d = pd.read_csv(file_name)
                 st.header("The epitope information")
-                st.write(df_d)
+                st.dataframe(df_d)
 
                 pro = []
                 for i in range(len(epi)):
@@ -2103,7 +2094,7 @@ def main():
                 df_p.to_csv(file_name)
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
-                st.write(df_d1)
+                st.dataframe(df_d1)
 
                 df1 = pd.read_csv('epitopes_results.csv')
                 df2 = pd.read_csv('p_Sequence.csv')
@@ -2112,8 +2103,6 @@ def main():
                 print("Merged CSV file has been created.")
 
                 final_res = pd.read_csv('result.csv')
-                st.header('The CSV with epitope information')
-                st.write(final_res)
 
                 inps = ['start', 'end', 'R_Percent', 'D_Percent', 'Q_Percent', 'H_Percent',
                         'I_Percent', 'L_Percent',
@@ -2139,8 +2128,7 @@ def main():
                 random_forest_pred = []
                 df = pd.read_csv('extracted_columns.csv')
                 print(df.columns)
-                st.header("The extracted Columns")
-                st.write(df)
+
                 for i in range(len(df)):
                     print(df.end.values[i])
                     print(
@@ -2255,9 +2243,7 @@ def main():
 
                 kolaskar_df.to_csv('kolaskar.csv')
                 df_kolaskar = pd.read_csv("kolaskar.csv")
-                st.header('The Kolaskar score information')
-                st.write(df_kolaskar)
-
+                
                 def protein_to_numerical(sequence):
                     if isinstance(sequence, str):
                         aa_hydrophobicity = {
@@ -2324,8 +2310,8 @@ def main():
 
                 score_df.to_csv("final_output.csv")
                 score = pd.read_csv('final_output.csv')
-                st.header("The File with score and values")
-                st.write(score)
+                st.header("Machine Learning Classifier Results")
+                st.dataframe(score)
 
                 print(score['Random_forest_Target'].values)
                 print(score['Extra_tree_Target'].values)
@@ -2393,10 +2379,11 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values','KOLASKAR_SCORE']
-                    st.write("......Analysis completed....")
-                    st.write('...These final epitopes are generated with at least 2 of the models predicted them as epitopes...')
-                    st.header("Final Predicted Epitopes")
-                    st.table(df_tab[col])
+                    st.write("ANALYSIS COMPLETED")
+                    st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.header("Final Predicted Cancer Epitopes")
+                    st.dataframe(df_tab[col])
+                    
                 else:
                     values = df_d3['KOLASKAR_SCORE'].sort_values(ascending=False).values
                     val = []
@@ -2417,20 +2404,21 @@ def main():
                         ends.append(df_val.end)
                         score.append(df_val.KOLASKAR_SCORE)
 
-                        data_dict = {
+                    data_dict = {
                         'Epitope': epitope,
                         'HLA': hla,
                         'Start': starts,
                         'End': ends,
                         "kolaskar_score":score,
                     }
-                    df = pd.DataFrame(data_dict)
-                    df = df.explode('Epitope').explode('HLA').explode('Start').explode('End').explode('kolaskar_score')
-                    df.reset_index(drop=True, inplace=True)
+                    df_l = pd.DataFrame(data_dict)
+                    df_l = df_l.explode('Epitope').explode('HLA').explode('Start').explode('End').explode('kolaskar_score')
+                    df_l.reset_index(drop=True, inplace=True)
                     print(df)
-                    st.write('...These final epitopes are generated with at least 2 of the models predicted them as epitopes...')
-                    st.write("......Analysis completed....")
-                    st.write(df)
+                    st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.write("Final predicted Cancer Epitopes")
+                    st.write("ANALYSIS COMPLETED")
+                    st.dataframe(df_l)
 
     elif page == "About":
         st.title("About Us")
