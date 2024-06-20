@@ -69,7 +69,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Processing:***')
+                    status_text.text(f'****⏳Analysis initiated:***')
                     st.write(f"[{i + 1}] ", text[i])
 
                 protein_sequence = text_input
@@ -710,7 +710,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Processing:***')
+                    status_text.text(f'****⏳Analysis initiated:***')
                     st.write(f"[{i + 1}] ", text1[i])
 
                 protein_sequence = text_input
@@ -1320,7 +1320,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Processing:***')
+                    status_text.text(f'****⏳Analysis initiated:***')
                     st.write(f"[{i + 1}] ", text1[i])
 
                 protein_sequence = text_input
@@ -1931,7 +1931,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Processing:***')
+                    status_text.text(f'****⏳Analysis initiated:***')
                     st.write(f"[{i + 1}] ", text[i])
 
                 protein_sequence = text_input
