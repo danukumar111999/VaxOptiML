@@ -69,12 +69,12 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Processing:***')
                     st.write(f"[{i + 1}] ", text[i])
 
                 protein_sequence = text_input
 
-                if len(protein_sequence)>10:
+                if len(protein_sequence)>=10:
                     def find_epitopes(sequence, window_size=10):
                         epitopes = []
                         start = []
@@ -332,7 +332,7 @@ def main():
 
                 r_result = p_process_single_protein(protein_sequence)
                 global epitopes
-                if len(protein_sequence) > 10:
+                if len(protein_sequence) >= 10:
                     epitopes = find_epitopes(protein_sequence, window_size=10)
                 elif len(protein_sequence) ==9:
                     epitopes=find_epitopes(protein_sequence,window_size=9)
@@ -645,7 +645,7 @@ def main():
                 target = df_d3[['Extra_tree_Target', 'Random_forest_Target','bagging_Target']].sum(axis=1)
                 print('---------------------------------------------')
                 print(target)
-                df_d3['Target'] = (target ==2 ).astype(int)
+                df_d3['Target'] = (target == 2 ).astype(int)
                 print(df_d3.Target)
                 print('-------------------------------------------------------')
                 df_tar = df_d3[df_d3['Target'] == 1]
@@ -709,7 +709,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Processing:***')
                     st.write(f"[{i + 1}] ", text1[i])
 
                 protein_sequence = text_input
@@ -1319,7 +1319,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Processing:***')
                     st.write(f"[{i + 1}] ", text1[i])
 
                 protein_sequence = text_input
@@ -1867,7 +1867,7 @@ def main():
                 target = df_d3[['Extra_tree_Target', 'Random_forest_Target','bagging_Target']].sum(axis=1)
                 print('---------------------------------------------')
                 print(target)
-                df_d3['Target'] = (target ==2).astype(int)
+                df_d3['Target'] = (target == 2).astype(int)
                 print(df_d3.Target)
                 print('-------------------------------------------------------')
                 df_tar = df_d3[df_d3['Target'] == 1]
@@ -1930,7 +1930,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Processing:***')
                     st.write(f"[{i + 1}] ", text[i])
 
                 protein_sequence = text_input
