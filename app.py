@@ -69,7 +69,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Processing:***')
                     st.write(f"[{i + 1}] ", text[i])
 
                 protein_sequence = text_input
@@ -710,7 +710,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Processing:***')
                     st.write(f"[{i + 1}] ", text1[i])
 
                 protein_sequence = text_input
@@ -1320,7 +1320,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Processing:***')
                     st.write(f"[{i + 1}] ", text1[i])
 
                 protein_sequence = text_input
@@ -1931,7 +1931,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Processing:***')
                     st.write(f"[{i + 1}] ", text[i])
 
                 protein_sequence = text_input
@@ -2567,7 +2567,7 @@ def main():
     2. Specify the type of MHC requirement (MHC-1 or MHC-2 or both)
     3. The given protein sequence will be chunked into peptides (probable epitopes) and feature of those peptides will be generated.
     4. The input protein sequence features will be extracted and results will be generated
-    5. For more information refer https://github.com/danukumar111999/VaxOptiML/blob/main/app.py
+    5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
     """)
 
 
