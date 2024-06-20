@@ -254,7 +254,7 @@ def main():
                     p_aliphatic_index = sum(kd[aa] for aa in protein_sequence) / len(protein_sequence)
                     p_positive_residues = sum(protein_sequence.count(aa) for aa in ['R', 'K', 'H'])
                     p_negative_residues = sum(protein_sequence.count(aa) for aa in ['D', 'E'])
-                    p_aromatic_count = p_px     rotein_analyzer.aromaticity() * len(protein_sequence)
+                    p_aromatic_count = p_protein_analyzer.aromaticity() * len(protein_sequence)
                     p_polar_amino_acids = set("STNQ")
                     p_non_polar_amino_acids = set("ACDEFGHIKLMNPQRSTVWY")
                     p_polar_count = sum(protein_sequence.count(aa) for aa in p_polar_amino_acids)
@@ -2537,6 +2537,9 @@ def main():
                     csv_data = convert_df_to_csv(df_l)
                     csv_link = create_download_link(csv_data, "final_epitopes.csv", "text/csv")
                     st.markdown(csv_link, unsafe_allow_html=True)
+            elif prediction_option=="epitope test":
+                protein_sequence=text_input
+
 
     elif page == "About":
         st.title("About Us")
