@@ -20,7 +20,6 @@ import base64
 
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
-
 def create_download_link(data, filename, mime):
     b64 = base64.b64encode(data).decode()
     return f'<a href="data:{mime};base64,{b64}" download="{filename}">Download {filename}</a>'
@@ -69,7 +68,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Analysis Initiated:***')
                     st.write(f"[{i + 1}] ", text[i])
 
                 protein_sequence = text_input
@@ -646,7 +645,7 @@ def main():
                 target = df_d3[['Extra_tree_Target', 'Random_forest_Target','bagging_Target']].sum(axis=1)
                 print('---------------------------------------------')
                 print(target)
-                df_d3['Target'] = (target == 2 ).astype(int)
+                df_d3['Target'] = (target >=2 ).astype(int)
                 print(df_d3.Target)
                 print('-------------------------------------------------------')
                 df_tar = df_d3[df_d3['Target'] == 1]
@@ -710,7 +709,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Analysis Initiated:***')
                     st.write(f"[{i + 1}] ", text1[i])
 
                 protein_sequence = text_input
@@ -1257,7 +1256,7 @@ def main():
                 target = df_d3[['Extra_tree_Target', 'Random_forest_Target','bagging_Target']].sum(axis=1)
                 print('---------------------------------------------')
                 print(target)
-                df_d3['Target'] = (target == 2).astype(int)
+                df_d3['Target'] = (target >=2).astype(int)
                 print(df_d3.Target)
                 print('-------------------------------------------------------')
                 df_tar = df_d3[df_d3['Target'] == 1]
@@ -1320,7 +1319,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Analysis Initiated:***')
                     st.write(f"[{i + 1}] ", text1[i])
 
                 protein_sequence = text_input
@@ -1868,7 +1867,7 @@ def main():
                 target = df_d3[['Extra_tree_Target', 'Random_forest_Target','bagging_Target']].sum(axis=1)
                 print('---------------------------------------------')
                 print(target)
-                df_d3['Target'] = (target == 2).astype(int)
+                df_d3['Target'] = (target >=2).astype(int)
                 print(df_d3.Target)
                 print('-------------------------------------------------------')
                 df_tar = df_d3[df_d3['Target'] == 1]
@@ -1931,7 +1930,7 @@ def main():
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
-                    status_text.text(f'****⏳Analysis initiated:***')
+                    status_text.text(f'****⏳Analysis Initiated:***')
                     st.write(f"[{i + 1}] ", text[i])
 
                 protein_sequence = text_input
@@ -2479,7 +2478,7 @@ def main():
                 target = df_d3[['Extra_tree_Target', 'Random_forest_Target','bagging_Target']].sum(axis=1)
                 print('---------------------------------------------')
                 print(target)
-                df_d3['Target'] = (target == 2).astype(int)
+                df_d3['Target'] = (target >=2 ).astype(int)
                 print(df_d3.Target)
                 print('-------------------------------------------------------')
                 df_tar = df_d3[df_d3['Target'] == 1]
@@ -2530,16 +2529,12 @@ def main():
                     df_l.reset_index(drop=True, inplace=True)
                     print(df)
                     st.header("Final Predicted Cancer Epitopes for MHC-2")
-                    st.write(
-                        'These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
                     st.write("ANALYSIS COMPLETED")
                     st.dataframe(df_l)
                     csv_data = convert_df_to_csv(df_l)
                     csv_link = create_download_link(csv_data, "final_epitopes.csv", "text/csv")
                     st.markdown(csv_link, unsafe_allow_html=True)
-            elif prediction_option=="epitope test":
-                protein_sequence=text_input
-
 
     elif page == "About":
         st.title("About Us")
@@ -2572,7 +2567,6 @@ def main():
     4. The input protein sequence features will be extracted and results will be generated
     5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
     """)
-
 
 if __name__ == "__main__":
     main()
