@@ -2522,7 +2522,7 @@ def main():
     2. Specify the type of MHC requirement (MHC-1 or MHC-2 or both)
     3. The given protein sequence will be chunked into peptides (probable epitopes) and feature of those peptides will be generated.
     4. The input protein sequence features will be extracted and results will be generated
-    5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
+    5. For more information refer https://github.com/danukumar111999/VaxOptiML/blob/main/app.py
     """)
 
 
