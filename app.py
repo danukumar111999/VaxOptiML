@@ -16,8 +16,15 @@ from lightgbm import LGBMRegressor
 import joblib
 import time
 import base64
+import smtplib
+from email.mime.multipart import  MIMEMultipart
+from email.mime.text import  MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 
 
+sender_email = 'genomicsinsights@gmail.com'
+password = 'iffemqtvylfoartz'
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
 def create_download_link(data, filename, mime):
@@ -63,16 +70,17 @@ def main():
                                      "\n 2. Remove Headers/Identifier\n"
                                      "\n 3. Dont close the browser while Analysis is Running\n",
                                      ("MHC-1", "MHC-2", "BOTH"))
-        if st.button("Predict"):
+
+        receiver_email=st.text_input("enter the email*: ")
+        if st.button("Predict") and receiver_email:
             if prediction_option == "MHC-1" and text_input:
                 status_text = st.empty()
                 for i in range(6):
                     time.sleep(9)
                     status_text.text(f'****⏳Analysis Initiated:***')
-                    st.write(f"[{i + 1}] ", text[i])
+                    st.write(f"[{i + 1}] ", text1[i])
 
                 protein_sequence = text_input
-
                 if len(protein_sequence)>=10:
                     def find_epitopes(sequence, window_size=10):
                         epitopes = []
@@ -642,10 +650,10 @@ def main():
                 df_final['hla_values'] = hla_output
                 df_final.to_csv("expected.csv")
                 df_d3 = pd.read_csv("expected.csv")
-                target = df_d3[['Extra_tree_Target', 'Random_forest_Target','bagging_Target']].sum(axis=1)
+                target = df_d3[['Extra_tree_Target', 'Random_forest_Target', 'bagging_Target']].sum(axis=1)
                 print('---------------------------------------------')
                 print(target)
-                df_d3['Target'] = (target >=2 ).astype(int)
+                df_d3['Target'] = (target >= 2).astype(int)
                 print(df_d3.Target)
                 print('-------------------------------------------------------')
                 df_tar = df_d3[df_d3['Target'] == 1]
@@ -654,12 +662,29 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values', 'KOLASKAR_SCORE']
-                    st.header('Final Predicted Cancer Epitopes')
-                    st.write("ANALYSIS COMPLETED")
-                    st.write(
-                        'These final epitopes are generated with at least 2 of the models predicted them as epitopes')
-                    st.dataframe(df_tab[col])
-                    csv_d = convert_df_to_csv(df_tab[col])
+                    df_tab[col].to_csv("final_epitopes.csv")
+                    st.header("ANALYSIS COMPLETED")
+                    msg = MIMEMultipart()
+                    msg['From'] = sender_email
+                    msg['To'] = receiver_email
+                    msg['subject'] = "Thank you for using our tool"
+                    body = f"FINAL CSV FILE OF FINAL PREDICTED EPITOPES for mhc-1 of {protein_sequence}"
+                    msg.attach(MIMEText(body, 'html'))
+                    filename = 'final_epitopes.csv'
+                    attachment = open(filename, 'rb')
+                    p = MIMEBase('application', 'octet-stream')
+                    p.set_payload((attachment).read())
+                    encoders.encode_base64(p)
+                    p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                    msg.attach(p)
+                    server = smtplib.SMTP("smtp.gmail.com", 587)
+                    server.starttls()
+                    server.login(sender_email, password)
+                    text = msg.as_string()
+                    server.send_message(msg)
+                    server.quit()
+                    st.header('Email sent')
+                    csv_d = convert_df_to_csv(df_tar)
                     c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
                     st.markdown(c_lnk, unsafe_allow_html=True)
                 else:
@@ -694,16 +719,33 @@ def main():
                         'Kolaskar_score')
                     df_l.reset_index(drop=True, inplace=True)
                     print(df_l)
-                    st.header('Final Predicted Cancer Epitopes')
-                    st.write("ANALYSIS COMPLETED")
-                    st.write(
-                        'These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.header("ANALYSIS COMPLETED")
                     st.dataframe(df_l)
+
                     df_l.to_csv("final_epi.csv")
-                    csv_d = convert_df_to_csv(df_tar)
+                    msg = MIMEMultipart()
+                    msg['From'] = sender_email
+                    msg['To'] = receiver_email
+                    msg['subject'] = "Thank your for using our tool"
+                    body = f"FINAL CSV FILE OF FINALLY PREDICTED EPITOPES for mhc-1 of {protein_sequence}"
+                    msg.attach(MIMEText(body, 'html'))
+                    filename = 'final_epi.csv'
+                    attachment = open(filename, 'rb')
+                    p = MIMEBase('application', 'octet-stream')
+                    p.set_payload((attachment).read())
+                    encoders.encode_base64(p)
+                    p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                    msg.attach(p)
+                    server = smtplib.SMTP("smtp.gmail.com", 587)
+                    server.starttls()
+                    server.login(sender_email, password)
+                    text = msg.as_string()
+                    server.send_message(msg)
+                    server.quit()
+                    st.header('Email sent')
+                    csv_d = convert_df_to_csv(df_l)
                     c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
                     st.markdown(c_lnk, unsafe_allow_html=True)
-
 
             elif prediction_option == "MHC-2" and text_input:
                 status_text = st.empty()
@@ -1265,10 +1307,30 @@ def main():
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values', 'KOLASKAR_SCORE']
+                    df_tab[col].to_csv("final_epitope.csv")
                     st.header('Final Predicted Cancer Epitopes')
                     st.write("ANALYSIS COMPLETED")
-                    st.write(
-                        "These final epitopes are generated with at least 2 of the models predicted them as epitopes")
+                    msg = MIMEMultipart()
+                    msg['From'] = sender_email
+                    msg['To'] = receiver_email
+                    msg['subject'] = "THANK YOU FOR USING OUR TOOL"
+                    body = f"THIS IS FINAL CSV FILE WITH FINAL PREDICTED EPITOPES of mhc-2 of {protein_sequence}"
+                    msg.attach(MIMEText(body, 'html'))
+                    filename = 'final_epitope.csv'
+                    attachment = open(filename, 'rb')
+                    p = MIMEBase('application', 'octet-stream')
+                    p.set_payload((attachment).read())
+                    encoders.encode_base64(p)
+                    p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                    msg.attach(p)
+                    server = smtplib.SMTP("smtp.gmail.com", 587)
+                    server.starttls()
+                    server.login(sender_email, password)
+                    text = msg.as_string()
+                    server.send_message(msg)
+                    server.quit()
+                    st.header('Email sent')
+
                     st.dataframe(df_tab[col])
                     csv_d = convert_df_to_csv(df_tab[col])
                     c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
@@ -1308,8 +1370,27 @@ def main():
                     print(df)
                     st.header('Final Predicted Cancer Epitopes')
                     st.write("ANALYSIS COMPLETED")
-                    st.write(
-                        'These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    df_l.to_csv("final_epi.csv")
+                    msg = MIMEMultipart()
+                    msg['From'] = sender_email
+                    msg['To'] = receiver_email
+                    msg['subject'] = "Thank you for using our tool "
+                    body = f"FINAL CSV FILE WITH FINAL PREDICTED EPITOPES of mhc-2 of  {protein_sequence}"
+                    msg.attach(MIMEText(body, 'html'))
+                    filename = 'final_epi.csv'
+                    attachment = open(filename, 'rb')
+                    p = MIMEBase('application', 'octet-stream')
+                    p.set_payload((attachment).read())
+                    encoders.encode_base64(p)
+                    p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                    msg.attach(p)
+                    server = smtplib.SMTP("smtp.gmail.com", 587)
+                    server.starttls()
+                    server.login(sender_email, password)
+                    text = msg.as_string()
+                    server.send_message(msg)
+                    server.quit()
+                    st.header('Email sent')
                     st.dataframe(df_l)
                     df_csv = convert_df_to_csv(df_l)
                     c_d_l = create_download_link(df_csv, 'final_epitopes.csv', "text/csv")
@@ -1878,8 +1959,29 @@ def main():
                     col = ['start', 'end', 'Epitope', 'hla_values', 'KOLASKAR_SCORE']
                     st.header('Final Predicted Cancer Epitopes for MHC-1')
                     st.write("ANALYSIS COMPLETED")
-                    st.write(
-                        'These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    df_tab[col].to_csv("final_epitopes.csv")
+                    st.header("ANALYSIS COMPLETED")
+                    msg = MIMEMultipart()
+                    msg['From'] = sender_email
+                    msg['To'] = receiver_email
+                    msg['subject'] = "Thank you for using our tool"
+                    body = f"FINAL CSV FILE OF FINAL PREDICTED EPITOPES for mhc-1 of {protein_sequence}"
+                    msg.attach(MIMEText(body, 'html'))
+                    filename = 'final_epitopes.csv'
+                    attachment = open(filename, 'rb')
+                    p = MIMEBase('application', 'octet-stream')
+                    p.set_payload((attachment).read())
+                    encoders.encode_base64(p)
+                    p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                    msg.attach(p)
+                    server = smtplib.SMTP("smtp.gmail.com", 587)
+                    server.starttls()
+                    server.login(sender_email, password)
+                    text = msg.as_string()
+                    server.send_message(msg)
+                    server.quit()
+                    st.header('Email sent')
+
                     st.dataframe(df_tab[col])
                     csv_d = convert_df_to_csv(df_tab[col])
                     c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
@@ -1920,8 +2022,33 @@ def main():
                     print(df_1)
                     st.header("Final Predicted Cancer Epitopes for MHC-1")
                     st.write("ANALYSIS COMPLETED")
+                    st.header("Final Predicted Cancer Epitopes for MHC-2")
                     st.write(
                         'These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    st.write("ANALYSIS COMPLETED")
+                    st.dataframe(df_1)
+                    df_1.to_csv("final_one.csv")
+
+                    msg = MIMEMultipart()
+                    msg['From'] = sender_email
+                    msg['To'] = receiver_email
+                    msg['subject'] = "Thank your for using our tool"
+                    body = f"FINAL CSV FILE OF FINALLY PREDICTED EPITOPES for mhc-1 of sequence given {protein_sequence}"
+                    msg.attach(MIMEText(body, 'html'))
+                    filename = 'final_one.csv'
+                    attachment = open(filename, 'rb')
+                    p = MIMEBase('application', 'octet-stream')
+                    p.set_payload((attachment).read())
+                    encoders.encode_base64(p)
+                    p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                    msg.attach(p)
+                    server = smtplib.SMTP("smtp.gmail.com", 587)
+                    server.starttls()
+                    server.login(sender_email, password)
+                    text = msg.as_string()
+                    server.send_message(msg)
+                    server.quit()
+                    st.header('Email sent')
                     st.dataframe(df_1)
                     csv_lk = convert_df_to_csv(df_1)
                     csv_l = create_download_link(csv_lk, 'final_epitopes.csv', "text/csv")
@@ -1931,7 +2058,7 @@ def main():
                 for i in range(6):
                     time.sleep(9)
                     status_text.text(f'****⏳Analysis Initiated:***')
-                    st.write(f"[{i + 1}] ", text[i])
+                    st.write(f"[{i + 1}] ",text2[i])
 
                 protein_sequence = text_input
 
@@ -2489,8 +2616,29 @@ def main():
                     col = ['start', 'end', 'Epitope', 'hla_values', 'KOLASKAR_SCORE']
                     st.header("Final Predicted Cancer Epitopes for MHC-2")
                     st.write("ANALYSIS COMPLETED")
-                    st.write(
-                        'These final epitopes are generated with at least 2 of the models predicted them as epitopes')
+                    df_tab[col].to_csv("final_epitopes.csv")
+                    st.header("ANALYSIS COMPLETED")
+                    msg = MIMEMultipart()
+                    msg['From'] = sender_email
+                    msg['To'] = receiver_email
+                    msg['subject'] = "Thank you for using our tool"
+                    body = f"FINAL CSV FILE OF FINAL PREDICTED EPITOPES for mhc-2 of {protein_sequence}"
+                    msg.attach(MIMEText(body, 'html'))
+                    filename = 'final_epitopes.csv'
+                    attachment = open(filename, 'rb')
+                    p = MIMEBase('application', 'octet-stream')
+                    p.set_payload((attachment).read())
+                    encoders.encode_base64(p)
+                    p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                    msg.attach(p)
+                    server = smtplib.SMTP("smtp.gmail.com", 587)
+                    server.starttls()
+                    server.login(sender_email, password)
+                    text = msg.as_string()
+                    server.send_message(msg)
+                    server.quit()
+                    st.header('Email sent')
+
                     st.dataframe(df_tab[col])
                     csv_dt = convert_df_to_csv(df_tab[col])
                     csv_lnk = create_download_link(csv_dt, "final_epitopes.csv", "text/csv")
@@ -2528,13 +2676,37 @@ def main():
                         'kolaskar_score')
                     df_l.reset_index(drop=True, inplace=True)
                     print(df)
+
                     st.header("Final Predicted Cancer Epitopes for MHC-2")
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
                     st.write("ANALYSIS COMPLETED")
                     st.dataframe(df_l)
+                    df_l.to_csv("final_epi.csv")
+                    msg = MIMEMultipart()
+                    msg['From'] = sender_email
+                    msg['To'] = receiver_email
+                    msg['subject'] = "Thank your for using our tool"
+                    body = f"FINAL CSV FILE OF FINALLY PREDICTED EPITOPES for mhc-2 of sequence given {protein_sequence}"
+                    msg.attach(MIMEText(body, 'html'))
+                    filename = 'final_epi.csv'
+                    attachment = open(filename, 'rb')
+                    p = MIMEBase('application', 'octet-stream')
+                    p.set_payload((attachment).read())
+                    encoders.encode_base64(p)
+                    p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                    msg.attach(p)
+                    server = smtplib.SMTP("smtp.gmail.com", 587)
+                    server.starttls()
+                    server.login(sender_email, password)
+                    text = msg.as_string()
+                    server.send_message(msg)
+                    server.quit()
+                    st.header('Email sent')
+
                     csv_data = convert_df_to_csv(df_l)
                     csv_link = create_download_link(csv_data, "final_epitopes.csv", "text/csv")
                     st.markdown(csv_link, unsafe_allow_html=True)
+
 
     elif page == "About":
         st.title("About Us")
@@ -2565,7 +2737,7 @@ def main():
     2. Specify the type of MHC requirement (MHC-1 or MHC-2 or both)
     3. The given protein sequence will be chunked into peptides (probable epitopes) and feature of those peptides will be generated.
     4. The input protein sequence features will be extracted and results will be generated
-    5. For more information refer https://github.com/danukumar111999/VaxOptiML/blob/main/README.md
+    5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
     """)
 
 if __name__ == "__main__":
