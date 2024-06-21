@@ -48,7 +48,8 @@ The input protein sequence features will be extracted
 
 
 
-![Screenshot 2024-05-17 094557](https://github.com/sripad2020/aaa/assets/59697056/39f8f313-ee23-44ec-a672-903600e33ffe)
+<img width="475" alt="image" src="https://github.com/danukumar111999/VaxOptiML/assets/172895426/09a69051-805e-473a-8713-8f24cf3addef">
+
 
 
 This image interprets the final result of epitope with it's K-T score along the HLA'S it binds 
