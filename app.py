@@ -17,10 +17,10 @@ import joblib
 import time
 import base64
 import smtplib
-from email.mime.multipart import  MIMEMultipart
-from email.mime.text import  MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
+from .mime.multipart import  MIMEMultipart
+from .mime.text import  MIMEText
+from .mime.base import MIMEBase
+from  import encoders
 
 
 def clear_catche():
@@ -28,7 +28,7 @@ def clear_catche():
 
 clear_catche()
 
-sender_email = 'genomicsinsights@gmail.com'
+sender_ = 'genomicsinsights@gmail.com'
 password = 'iffemqtvylfoartz'
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
@@ -77,7 +77,7 @@ def main():
                                      "\n 4.Dont close the browser while Analysis is Running\n",
                                      ("MHC-1", "MHC-2", "BOTH"))
 
-        receiver_email=st.text_input("Enter the Email*: ")
+        receiver_email=st.text_input("Enter the Email Id*: ")
         if st.button("Predict") and receiver_email:
             if prediction_option == "MHC-1" and text_input:
                 status_text = st.empty()
