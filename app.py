@@ -2755,7 +2755,10 @@ def main():
     3. The given protein sequence will be chunked into peptides (probable epitopes) and feature of those peptides will be generated.
     4. The input protein sequence features will be extracted and results will be generated
     5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
+
+    ## standalone package 
     """)
+        
 
 if __name__ == "__main__":
     main()
