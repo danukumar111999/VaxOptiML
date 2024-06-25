@@ -2757,7 +2757,8 @@ def main():
     5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
 
     ## standalone package 
-    """)
+     """)
+        st.image("stand alone.png", width=200)
         
 
 if __name__ == "__main__":
