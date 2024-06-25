@@ -2757,6 +2757,7 @@ def main():
     5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
 
     ## Standalone package 
+    Please follow the steps below to use our standalone package. 
      """)
         st.image("stand alone.png", width=700)
         
