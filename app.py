@@ -2756,9 +2756,9 @@ def main():
     4. The input protein sequence features will be extracted and results will be generated
     5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
 
-    ## standalone package 
+    ## Standalone package 
      """)
-        st.image("stand alone.png", width=600)
+        st.image("stand alone.png", width=700)
         
 
 if __name__ == "__main__":
