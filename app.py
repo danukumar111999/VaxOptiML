@@ -2758,7 +2758,7 @@ def main():
 
     ## standalone package 
      """)
-        st.image("stand alone.png", width=500)
+        st.image("stand alone.png", width=600)
         
 
 if __name__ == "__main__":
