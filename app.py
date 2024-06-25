@@ -17,10 +17,10 @@ import joblib
 import time
 import base64
 import smtplib
-from .mime.multipart import  MIMEMultipart
-from .mime.text import  MIMEText
-from .mime.base import MIMEBase
-from  import encoders
+from email.mime.multipart import  MIMEMultipart
+from email.mime.text import  MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 
 
 def clear_catche():
