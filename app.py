@@ -71,9 +71,10 @@ def main():
     if page == "Home":
         text_input = st.text_input("Enter Protein Sequence :").upper()
         text_input = text_input.replace(" ", "")  # This line removes spaces from the input sequence
-        prediction_option = st.radio("Note- \n 1. Remove the spaces from the amino acid sequences:\n"
-                                     "\n 2. Remove Headers/Identifier\n"
-                                     "\n 3. Dont close the browser while Analysis is Running\n",
+        prediction_option = st.radio("\n 1.Remove the spaces from the amino acid sequences\n"
+                                     "\n 2.Remove Headers/Identifier\n"
+                                     "\n 3.If the input protein sequence is more than 250 amino acids, we recommend you to use our standalone package through this link: https://drive.google.com/file/d/1H3-yHwCJ7GQ2Nxwol4zoqsvQ_Pe2qjgr/view?usp=drive_link\n"  
+                                     "\n 4.Dont close the browser while Analysis is Running\n",
                                      ("MHC-1", "MHC-2", "BOTH"))
 
         receiver_email=st.text_input("enter the Email*: ")
