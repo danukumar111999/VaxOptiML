@@ -23,7 +23,8 @@ Input protein will be chunked, and features of those peptides will be generated.
 
       Getting started
   
- <img width="881" alt="strem-1" src="https://github.com/karthick1087/VaxOptiML/assets/44516308/1086d02a-d8ca-4352-a694-f3f38ea22147">
+ <img width="763" alt="Screenshot 2024-06-26 151021" src="https://github.com/danukumar111999/VaxOptiML/assets/172895426/a1e793ce-372f-416a-8602-1f0bf10b3acd">
+
 
 
 
