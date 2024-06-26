@@ -71,13 +71,12 @@ def main():
     if page == "Home":
         text_input = st.text_input("Enter Protein Sequence :").upper()
         text_input = text_input.replace(" ", "")  # This line removes spaces from the input sequence
-        prediction_option = st.radio("\n 1.Remove the spaces from the amino acid sequences:\n"
-                                     "\n 2.Remove Headers/Identifier\n"
-                                     "\n 3.If the input protein sequence is more than 250 amino acids, we recommend you to use our standalone package through this link https://drive.google.com/file/d/1H3-yHwCJ7GQ2Nxwol4zoqsvQ_Pe2qjgr/view?usp=drive_link( See help page for more information ):\n"
-                                     "\n 4.Dont close the browser while Analysis is Running\n",
+        prediction_option = st.radio("Note- \n 1. Remove the spaces from the amino acid sequences:\n"
+                                     "\n 2. Remove Headers/Identifier\n"
+                                     "\n 3. Dont close the browser while Analysis is Running\n",
                                      ("MHC-1", "MHC-2", "BOTH"))
 
-        receiver_email=st.text_input("Enter the Email*: ")
+        receiver_email=st.text_input("enter the email*: ")
         if st.button("Predict") and receiver_email:
             if prediction_option == "MHC-1" and text_input:
                 status_text = st.empty()
@@ -2740,7 +2739,14 @@ def main():
 
     ## Contact Information
     If you have any questions or feedback, please feel free to reach out to us:
-    - Email: genomicsinsights@gmail.com
+    - Email: karthick.1087@gmail.com
+    - Address: Institute of Bioinformatics, Bengaluru
+    - Dhanuskumar T
+    - Email: danukumar517@gmail.com
+    - Sripad Rama Hebbar
+    - Email: sripadkarthik@gmail.com 
+    - Sunila BG
+    - Email: sunilabasavanagowda808@gmail.com
     """)
 
     # Help page content
@@ -2755,12 +2761,7 @@ def main():
     3. The given protein sequence will be chunked into peptides (probable epitopes) and feature of those peptides will be generated.
     4. The input protein sequence features will be extracted and results will be generated
     5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
-
-    ## Standalone package 
-    Please follow the steps below to use our standalone package. 
-     """)
-        st.image("stand alone.png", width=700)
-        
+    """)
 
 if __name__ == "__main__":
     main()
