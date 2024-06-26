@@ -3025,6 +3025,7 @@ def main():
     ## Standalone package 
     Please follow the steps below to use our standalone package. 
      """)
+        st.image("standalone.png", width=700)
    
 
 if __name__ == "__main__":
