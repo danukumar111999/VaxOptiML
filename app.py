@@ -76,7 +76,7 @@ def main():
                                      "\n 3. Dont close the browser while Analysis is Running\n",
                                      ("MHC-1", "MHC-2", "BOTH"))
 
-        receiver_email=st.text_input("enter the email*: ")
+        receiver_email=st.text_input("enter the Email*: ")
         if st.button("Predict") and receiver_email:
             if prediction_option == "MHC-1" and text_input:
                 status_text = st.empty()
@@ -2739,14 +2739,7 @@ def main():
 
     ## Contact Information
     If you have any questions or feedback, please feel free to reach out to us:
-    - Email: karthick.1087@gmail.com
-    - Address: Institute of Bioinformatics, Bengaluru
-    - Dhanuskumar T
-    - Email: danukumar517@gmail.com
-    - Sripad Rama Hebbar
-    - Email: sripadkarthik@gmail.com 
-    - Sunila BG
-    - Email: sunilabasavanagowda808@gmail.com
+    - Email: genomicsinsights@gmail.com
     """)
 
     # Help page content
