@@ -40,7 +40,7 @@ def create_download_link(data, filename, mime):
 page = st.sidebar.radio("Choose a page", ["Home", "About", "Help"])
 st.title("VaxOptiML")
 st.write("An integrated pipeline designed to enhance epitope prediction and prioritization")
-st.image("logo.png", width=250)
+st.image("logo.png", width=200)
 
 text = [
     'For epitope prediction in cancer immunotherapy, our integrated pipeline uses three models. We prioritize targets based on immunogenicity, precisely anticipate epitopes, and customize HLA pairing using sophisticated machine learning approaches and carefully selected datasets.',
@@ -3025,7 +3025,7 @@ def main():
     ## Standalone package 
     Please follow the steps below to use our standalone package. 
      """)
-    st.image("standalone.png", width=700)
+   
 
 if __name__ == "__main__":
     main()
