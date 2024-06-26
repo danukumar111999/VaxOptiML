@@ -76,7 +76,7 @@ def main():
                                      "\n 3. Dont close the browser while Analysis is Running\n",
                                      ("MHC-1", "MHC-2", "BOTH"))
 
-        receiver_email=st.text_input("enter the Email*: ")
+        receiver_email=st.text_input("enter the email*: ")
         if st.button("Predict") and receiver_email:
             if prediction_option == "MHC-1" and text_input:
                 status_text = st.empty()
@@ -362,6 +362,28 @@ def main():
                 df_d = pd.read_csv(file_name)
                 st.header("The epitope information")
                 st.dataframe(df_d)
+
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The epitope information  for mhc-1 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'epitopes_results.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
                 csv_dt = convert_df_to_csv(df_d)
                 csv_lnk = create_download_link(csv_dt, "Epitope_information.csv", "text/csv")
                 st.markdown(csv_lnk, unsafe_allow_html=True)
@@ -379,6 +401,28 @@ def main():
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
                 st.dataframe(df_d1)
+
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The protein_sequence information  for mhc-1 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'p_Sequence.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
 
                 csv_dt = convert_df_to_csv(df_d1)
                 csv_lnk = create_download_link(csv_dt, "Protein_sequence_information.csv", "text/csv")
@@ -601,6 +645,27 @@ def main():
                 clear_catche()
                 st.dataframe(score)
 
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The Machine Learning Classifier results for mhc-1 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'final_output.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
                 csv_dt = convert_df_to_csv(score)
                 csv_lnk = create_download_link(csv_dt, "ML_classification_output.csv", "text/csv")
                 st.markdown(csv_lnk, unsafe_allow_html=True)
@@ -673,6 +738,8 @@ def main():
                     col = ['start', 'end', 'Epitope', 'hla_values', 'KOLASKAR_SCORE']
                     df_tab[col].to_csv("final_epitopes.csv")
                     st.header("ANALYSIS COMPLETED")
+                    st.dataframe(df_tab[col])
+
                     msg = MIMEMultipart()
                     msg['From'] = sender_email
                     msg['To'] = receiver_email
@@ -693,6 +760,7 @@ def main():
                     server.send_message(msg)
                     server.quit()
                     st.header('Email sent')
+
                     csv_d = convert_df_to_csv(df_tar)
                     c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
                     st.markdown(c_lnk, unsafe_allow_html=True)
@@ -1011,6 +1079,27 @@ def main():
                 st.header("The epitope information")
                 st.dataframe(df_d)
 
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The Epitope results  for mhc-2 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'epitopes_results.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
                 csv_dt = convert_df_to_csv(df_d)
                 csv_lnk = create_download_link(csv_dt, "Epitope_information.csv", "text/csv")
                 st.markdown(csv_lnk, unsafe_allow_html=True)
@@ -1026,6 +1115,27 @@ def main():
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
                 st.dataframe(df_d1)
+
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The protein sequence for mhc-2 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'p_Sequence.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
 
                 csv_dt = convert_df_to_csv(df_d1)
                 csv_lnk = create_download_link(csv_dt, "Protein_sequence_information.csv", "text/csv")
@@ -1250,6 +1360,28 @@ def main():
                 csv_dt = convert_df_to_csv(score)
                 csv_lnk = create_download_link(csv_dt, "ML_Classification_output.csv", "text/csv")
                 st.markdown(csv_lnk, unsafe_allow_html=True)
+
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The Machine Learning Classifier results for mhc-2 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'final_output.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
 
                 print(score['Random_forest_Target'].values)
                 print(score['Extra_tree_Target'].values)
@@ -1664,6 +1796,28 @@ def main():
                 st.header("The epitope information")
                 st.dataframe(df_d)
 
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The epitope  results for mhc-1 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'epitopes_results.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
+
                 csv_dt = convert_df_to_csv(df_d)
                 csv_lnk = create_download_link(csv_dt, "Epitope_information.csv", "text/csv")
                 st.markdown(csv_lnk, unsafe_allow_html=True)
@@ -1679,6 +1833,28 @@ def main():
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
                 st.dataframe(df_d1)
+
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The P_Sequence results for mhc-1 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'p_Sequence.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
 
                 csv_dt = convert_df_to_csv(df_d1)
                 csv_lnk = create_download_link(csv_dt, "Protein_Sequence_information.csv", "text/csv")
@@ -1904,6 +2080,28 @@ def main():
                 score = pd.read_csv('final_output.csv')
                 st.header("The Machine Learning Classifier results")
                 st.dataframe(score)
+
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The Machine Learning Classifier results for mhc-1 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'final_output.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
                 csv_dt = convert_df_to_csv(score)
                 csv_lnk = create_download_link(csv_dt, "ML_Classification_output.csv", "text/csv")
                 st.markdown(csv_lnk, unsafe_allow_html=True)
@@ -2065,7 +2263,7 @@ def main():
                     server.send_message(msg)
                     server.quit()
                     st.header('Email sent')
-                    st.dataframe(df_1)
+
                     csv_lk = convert_df_to_csv(df_1)
                     csv_l = create_download_link(csv_lk, 'final_epitopes.csv', "text/csv")
                     st.markdown(csv_l, unsafe_allow_html=True)
@@ -2328,6 +2526,28 @@ def main():
                 st.header("The epitope information")
                 st.dataframe(df_d)
 
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The epitope results for mhc-2 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'epitopes_results.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
+
                 csv_dt = convert_df_to_csv(df_d)
                 csv_lnk = create_download_link(csv_dt, "Epitope_information.csv", "text/csv")
                 st.markdown(csv_lnk, unsafe_allow_html=True)
@@ -2343,6 +2563,28 @@ def main():
                 df_d1 = pd.read_csv(file_name)
                 st.header("The Protein sequence information")
                 st.dataframe(df_d1)
+
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The p_sequence results for mhc-1 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'p_Sequence.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
 
                 csv_dt = convert_df_to_csv(df_d1)
                 csv_lnk = create_download_link(csv_dt, "Protein_sequence_information.csv", "text/csv")
@@ -2566,6 +2808,28 @@ def main():
                 score = pd.read_csv('final_output.csv')
                 st.header("Machine Learning Classifier Results")
                 st.dataframe(score)
+
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['subject'] = "Thank you for using our tool"
+                body = f"The Machine Learning Classifier results for mhc-2 of {protein_sequence}"
+                msg.attach(MIMEText(body, 'html'))
+                filename = 'final_output.csv'
+                attachment = open(filename, 'rb')
+                p = MIMEBase('application', 'octet-stream')
+                p.set_payload((attachment).read())
+                encoders.encode_base64(p)
+                p.add_header('Content-disposition', 'attachment; filename= %s' % filename)
+                msg.attach(p)
+                server = smtplib.SMTP("smtp.gmail.com", 587)
+                server.starttls()
+                server.login(sender_email, password)
+                text = msg.as_string()
+                server.send_message(msg)
+                server.quit()
+                st.header('Email sent')
+
                 csv_dt = convert_df_to_csv(score)
                 csv_lnk = create_download_link(csv_dt, "ML_Classification_output.csv", "text/csv")
                 st.markdown(csv_lnk, unsafe_allow_html=True)
@@ -2704,6 +2968,7 @@ def main():
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
                     st.write("ANALYSIS COMPLETED")
                     st.dataframe(df_l)
+
                     df_l.to_csv("final_epi.csv")
                     msg = MIMEMultipart()
                     msg['From'] = sender_email
@@ -2739,7 +3004,14 @@ def main():
 
     ## Contact Information
     If you have any questions or feedback, please feel free to reach out to us:
-    - Email: genomicsinsights@gmail.com
+    - Email: karthick.1087@gmail.com
+    - Address: Institute of Bioinformatics, Bengaluru
+    - Dhanuskumar T
+    - Email: danukumar517@gmail.com
+    - Sripad Rama Hebbar
+    - Email: sripadkarthik@gmail.com 
+    - Sunila BG
+    - Email: sunilabasavanagowda808@gmail.com
     """)
 
     # Help page content
