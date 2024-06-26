@@ -28,7 +28,7 @@ def clear_catche():
 
 clear_catche()
 
-sender_ = 'genomicsinsights@gmail.com'
+sender_email = 'genomicsinsights@gmail.com'
 password = 'iffemqtvylfoartz'
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
