@@ -28,8 +28,12 @@ def clear_catche():
 
 clear_catche()
 
+import streamlit as st
+
+
+
 sender_email = 'genomicsinsights@gmail.com'
-password = 'iffemqtvylfoartz'
+password = 'yufa msxl rvhc uymw'
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
 def create_download_link(data, filename, mime):
@@ -39,33 +43,32 @@ def create_download_link(data, filename, mime):
 
 page = st.sidebar.radio("Choose a page", ["Home", "About", "Help"])
 st.title("VaxOptiML")
-st.write("An integrated pipeline designed to enhance epitope prediction and prioritization")
+st.write("An integrated pipeline designed to enhance Cancer epitope prediction and prioritization")
 st.image("logo.png", width=200)
 
 text = [
     'For epitope prediction in cancer immunotherapy, our integrated pipeline uses three models. We prioritize targets based on immunogenicity, precisely anticipate epitopes, and customize HLA pairing using sophisticated machine learning approaches and carefully selected datasets.',
-    'Thorough assessment demonstrates improved performance compared to current methods, and graphic depictions highlight the effectiveness of our ensemble model in accelerating epitope discovery and vaccine development for cancer immunotherapy.',
-    'After the input protein has been chunked, peptide features will be produced.',
+    'Thorough assessment demonstrates improved performance compared to current methods, and highlight the effectiveness of our ensemble model in accelerating epitope discovery and vaccine development for cancer immunotherapy.',
+    'The input protein will be chunked and peptide features will be generated.',
     'On the basis of 0 and 1 annotations, peptides will be classified as either epitopes or non-epitopes.',
-    'For such peptides, antigenic scores will be computed.Those peptides HLAs will be produced.',
-    'Ultimately, the antigenic score and epitope nature will determine the final probable epitopes, as well as their starting and finishing places.']
+    'For such peptides, antigenic scores are computed and HLA bindings are predicted.',
+    'Finally, the machine learning classifier and antigenic score will determine the final probable epitopes, as well as their starting and ending positions.']
 
 text1 = [
-    'Our integrated pipeline makes use of three models for epitope prediction in cancer immunotherapy. Using advanced machine learning techniques and carefully chosen datasets, we correctly predict epitopes, prioritize targets based on immunogenicity, and personalize HLA pairing.',
-    'A thorough evaluation reveals enhanced performance when compared to current methods, and graphic representations illustrate the efficiency of our ensemble model in expediting epitope discovery and vaccine development for cancer immunotherapy.',
-    'After chunking the input protein, peptide features will be generated.',
-    'Peptides will be classed as epitopes or non-epitopes based on their 0 and 1 annotations.',
-    'Antigenic scores for these peptides will be calculated.HLA peptides will be generated.',
-    'Finally, the antigenic score and epitope nature will indicate the most likely epitopes, as well as their starting and ending positions.']
+    'Our advanced epitope prediction framework leverages three robust models for cancer immunotherapy. By focusing on immunogenicity, we precisely forecast epitopes and align them with HLAs through advanced machine learning techniques and curated datasets.',
+    'Extensive evaluation shows our method outperforms existing techniques, emphasizing the ensemble model\'s efficiency in fast-tracking epitope identification and vaccine design for cancer treatment.',
+    'The target protein is segmented, and peptide characteristics are extracted.',
+    'Based on binary annotations, peptides are categorized as either epitopes or non-epitopes.',
+    'For these peptides, antigenicity scores are calculated, and their HLA bindings are predicted.',
+    'In conclusion, the machine learning classifier and antigenicity score pinpoint the most likely epitopes, along with their start and end locations.']
 
 text2 = [
-    'To anticipate epitopes for cancer immunotherapy, our integrated pipeline uses three models. By employing sophisticated machine learning methods and selective datasets, we are able to accurately forecast epitopes, rank targets according to immunogenicity, and customize HLA pairing.',
-    'A detailed analysis shows improved performance over existing approaches, and visual aids demonstrate our ensemble models effectiveness in accelerating epitope discovery and vaccine development for cancer immunotherapy.',
-    'Peptide features will be created following the chunking of the input protein.',
-    'Peptide features will be created following the chunking of the input protein.Peptides 0 and 1 annotations will determine whether they are considered epitopes or non-epitopes.',
-    'These peptides will have their antigenic scores determined.HLA peptides are going to be produced.',
-    'Ultimately, the epitope nature and antigenic score will provide the most probable epitopes together with their beginning and terminating positions']
-
+    "In our integrated pipeline for epitope prediction in cancer immunotherapy, three distinct models are utilized. We prioritize targets based on immunogenicity, accurately predict epitopes, and tailor HLA binding using sophisticated machine learning algorithms and selected datasets.",
+    "Comprehensive assessments show our method's enhanced performance compared to current techniques, highlighting the effectiveness of our ensemble model in speeding up epitope discovery and vaccine development for cancer immunotherapy.",
+    "The input protein sequence is divided into segments, and peptide features are generated.",
+    "Peptides are classified as either epitopes or non-epitopes based on binary annotations.",
+    "For these peptides, antigenic scores are calculated, and their HLA interactions are predicted.",
+    "Ultimately, the machine learning classifier and antigenic score determine the final probable epitopes, including their start and end positions."]
 
 def main():
     if page == "Home":
@@ -73,11 +76,11 @@ def main():
         text_input = text_input.replace(" ", "")  # This line removes spaces from the input sequence
         prediction_option = st.radio("\n 1.Remove the spaces from the amino acid sequences\n"
                                      "\n 2.Remove Headers/Identifier\n"
-                                     "\n 3.If the input protein sequence is more than 250 amino acids, we recommend you to use our standalone package through this link: https://drive.google.com/file/d/1H3-yHwCJ7GQ2Nxwol4zoqsvQ_Pe2qjgr/view?usp=drive_link ( see help page for more information )\n"  
+                                     "\n 3.If the input protein sequence is more than 250 amino acids, we recommend you to use our standalone package through this link: https://drive.google.com/file/d/1Zlc_U9beh5gNmcM1og3erpjDIiQLl1KD/view?usp=sharing ( See Help page for more information )\n"  
                                      "\n 4.Dont close the browser while Analysis is Running\n",
                                      ("MHC-1", "MHC-2", "BOTH"))
 
-        receiver_email=st.text_input("enter the Email*: ")
+        receiver_email=st.text_input("Enter the Email*: ")
         if st.button("Predict") and receiver_email:
             if prediction_option == "MHC-1" and text_input:
                 status_text = st.empty()
@@ -645,6 +648,7 @@ def main():
                 st.header("The Machine Learning Classifier results")
                 clear_catche()
                 st.dataframe(score)
+                st.write('The peptide is considered as probable epitope if atleast two out of the three models classify it as an epitope (1).')
 
                 msg = MIMEMultipart()
                 msg['From'] = sender_email
@@ -736,16 +740,19 @@ def main():
                     df_tar.to_csv('target.csv')
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
+                    df_tab = df_tab.sort_values(by="KOLASKAR_SCORE", ascending=False)
+                    
                     col = ['start', 'end', 'Epitope', 'hla_values', 'KOLASKAR_SCORE']
                     df_tab[col].to_csv("final_epitopes.csv")
                     st.header("ANALYSIS COMPLETED")
                     st.dataframe(df_tab[col])
+                    st.write("The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores")
 
                     msg = MIMEMultipart()
                     msg['From'] = sender_email
                     msg['To'] = receiver_email
                     msg['subject'] = "Thank you for using our tool"
-                    body = f"FINAL CSV FILE OF FINAL PREDICTED EPITOPES for mhc-1 of {protein_sequence}"
+                    body = f"FINAL CSV FILE OF FINAL PREDICTED EPITOPES for mhc-1 of {protein_sequence} The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores"
                     msg.attach(MIMEText(body, 'html'))
                     filename = 'final_epitopes.csv'
                     attachment = open(filename, 'rb')
@@ -790,22 +797,24 @@ def main():
                         'HLA': hla,
                         'Start': starts,
                         'End': ends,
-                        'Kolaskar_score': score
+                        'kolaskar_score': score
                     }
                     df_l = pd.DataFrame(data_dict)
+                    df_l=df_l.sort_values(by="kolaskar_score",ascending=False)
                     df_l = df_l.explode('Epitope').explode('HLA').explode('Start').explode('End').explode(
                         'Kolaskar_score')
                     df_l.reset_index(drop=True, inplace=True)
                     print(df_l)
                     st.header("ANALYSIS COMPLETED")
                     st.dataframe(df_l)
-
+                    st.write("The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores")
+                    
                     df_l.to_csv("final_epi.csv")
                     msg = MIMEMultipart()
                     msg['From'] = sender_email
                     msg['To'] = receiver_email
                     msg['subject'] = "Thank your for using our tool"
-                    body = f"FINAL CSV FILE OF FINALLY PREDICTED EPITOPES for mhc-1 of {protein_sequence}"
+                    body = f"FINAL CSV FILE OF FINALLY PREDICTED EPITOPES for mhc-1 of {protein_sequence} The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores"
                     msg.attach(MIMEText(body, 'html'))
                     filename = 'final_epi.csv'
                     attachment = open(filename, 'rb')
@@ -825,6 +834,7 @@ def main():
                     c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
                     st.markdown(c_lnk, unsafe_allow_html=True)
                 clear_catche()
+                
             elif prediction_option == "MHC-2" and text_input:
                 status_text = st.empty()
                 for i in range(6):
@@ -1358,6 +1368,7 @@ def main():
                 score = pd.read_csv('final_output.csv')
                 st.header("The Machine Learning Classifier results")
                 st.write(score)
+                st.write('The peptide is considered as probable epitope if atleast two out of the three models classify it as an epitope (1).')
                 csv_dt = convert_df_to_csv(score)
                 csv_lnk = create_download_link(csv_dt, "ML_Classification_output.csv", "text/csv")
                 st.markdown(csv_lnk, unsafe_allow_html=True)
@@ -1448,6 +1459,7 @@ def main():
                     df_tar.to_csv('target.csv')
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
+                    df_tab = df_tab.sort_values(by="KOLASKAR_SCORE", ascending=False)
                     col = ['start', 'end', 'Epitope', 'hla_values', 'KOLASKAR_SCORE']
                     df_tab[col].to_csv("final_epitope.csv")
                     st.header('Final Predicted Cancer Epitopes')
@@ -1456,7 +1468,7 @@ def main():
                     msg['From'] = sender_email
                     msg['To'] = receiver_email
                     msg['subject'] = "THANK YOU FOR USING OUR TOOL"
-                    body = f"THIS IS FINAL CSV FILE WITH FINAL PREDICTED EPITOPES of mhc-2 of {protein_sequence}"
+                    body = f"THIS IS FINAL CSV FILE WITH FINAL PREDICTED EPITOPES of mhc-2 of {protein_sequence} The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores"
                     msg.attach(MIMEText(body, 'html'))
                     filename = 'final_epitope.csv'
                     attachment = open(filename, 'rb')
@@ -1474,6 +1486,7 @@ def main():
                     st.header('Email sent')
 
                     st.dataframe(df_tab[col])
+                    st.write("The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores")
                     csv_d = convert_df_to_csv(df_tab[col])
                     c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
                     st.markdown(c_lnk, unsafe_allow_html=True)
@@ -1506,6 +1519,7 @@ def main():
                         'Kolaskar_score': score
                     }
                     df_l = pd.DataFrame(data_dict)
+                    df_tab = df_tab.sort_values(by="Kolaskar_score", ascending=False)
                     df_l = df_l.explode('Epitope').explode('HLA').explode('Start').explode('End').explode(
                         'Kolaskar_score')
                     df_l.reset_index(drop=True, inplace=True)
@@ -1517,7 +1531,7 @@ def main():
                     msg['From'] = sender_email
                     msg['To'] = receiver_email
                     msg['subject'] = "Thank you for using our tool "
-                    body = f"FINAL CSV FILE WITH FINAL PREDICTED EPITOPES of mhc-2 of  {protein_sequence}"
+                    body = f"FINAL CSV FILE WITH FINAL PREDICTED EPITOPES of mhc-2 of  {protein_sequence}  The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores"
                     msg.attach(MIMEText(body, 'html'))
                     filename = 'final_epi.csv'
                     attachment = open(filename, 'rb')
@@ -1534,6 +1548,7 @@ def main():
                     server.quit()
                     st.header('Email sent')
                     st.dataframe(df_l)
+                    st.write("The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores")
                     df_csv = convert_df_to_csv(df_l)
                     c_d_l = create_download_link(df_csv, 'final_epitopes.csv', "text/csv")
                     st.markdown(c_d_l, unsafe_allow_html=True)
@@ -2081,6 +2096,7 @@ def main():
                 score = pd.read_csv('final_output.csv')
                 st.header("The Machine Learning Classifier results")
                 st.dataframe(score)
+                st.write('The peptide is considered as probable epitope if atleast two out of the three models classify it as an epitope (1).')
 
                 msg = MIMEMultipart()
                 msg['From'] = sender_email
@@ -2174,6 +2190,7 @@ def main():
                     print(df_tab.columns)
                     col = ['start', 'end', 'Epitope', 'hla_values', 'KOLASKAR_SCORE']
                     st.header('Final Predicted Cancer Epitopes for MHC-1')
+                    st.write("The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores")
                     st.write("ANALYSIS COMPLETED")
                     df_tab[col].to_csv("final_epitopes.csv")
                     st.header("ANALYSIS COMPLETED")
@@ -2181,7 +2198,7 @@ def main():
                     msg['From'] = sender_email
                     msg['To'] = receiver_email
                     msg['subject'] = "Thank you for using our tool"
-                    body = f"FINAL CSV FILE OF FINAL PREDICTED EPITOPES for mhc-1 of {protein_sequence}"
+                    body = f"FINAL CSV FILE OF FINAL PREDICTED EPITOPES for mhc-1 of {protein_sequence} The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores"
                     msg.attach(MIMEText(body, 'html'))
                     filename = 'final_epitopes.csv'
                     attachment = open(filename, 'rb')
@@ -2199,6 +2216,7 @@ def main():
                     st.header('Email sent')
 
                     st.dataframe(df_tab[col])
+                    st.write("The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores")
                     csv_d = convert_df_to_csv(df_tab[col])
                     c_lnk = create_download_link(csv_d, "final_epitopes.csv", "text/csv")
                     st.markdown(c_lnk, unsafe_allow_html=True)
@@ -2232,6 +2250,7 @@ def main():
                         "Kolaskar_score": score
                     }
                     df_1 = pd.DataFrame(data_dict)
+                    df_tab = df_tab.sort_values(by="Kolaskar_score", ascending=False)
                     df_1 = df_1.explode('Epitope').explode('HLA').explode('Start').explode('End').explode(
                         "Kolaskar_score")
                     df_1.reset_index(drop=True, inplace=True)
@@ -2242,13 +2261,14 @@ def main():
                         'These final epitopes are generated with at least 2 of the models predicted them as epitopes')
                     st.write("ANALYSIS COMPLETED")
                     st.dataframe(df_1)
+                    st.write("The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores")
                     df_1.to_csv("final_one.csv")
 
                     msg = MIMEMultipart()
                     msg['From'] = sender_email
                     msg['To'] = receiver_email
                     msg['subject'] = "Thank your for using our tool"
-                    body = f"FINAL CSV FILE OF FINALLY PREDICTED EPITOPES for mhc-1 of sequence given {protein_sequence}"
+                    body = f"FINAL CSV FILE OF FINALLY PREDICTED EPITOPES for mhc-1 of sequence given {protein_sequence} The final prediction is made by selecting the probable epitopes with highest Kolaskar-Tongaonkar (K-T) Scores"
                     msg.attach(MIMEText(body, 'html'))
                     filename = 'final_one.csv'
                     attachment = open(filename, 'rb')
@@ -2809,6 +2829,7 @@ def main():
                 score = pd.read_csv('final_output.csv')
                 st.header("Machine Learning Classifier Results")
                 st.dataframe(score)
+                st.write('The peptide is considered as probable epitope if atleast two out of the three models classify it as an epitope (1).')
 
                 msg = MIMEMultipart()
                 msg['From'] = sender_email
@@ -2901,6 +2922,7 @@ def main():
                     df_tar.to_csv('target.csv')
                     df_tab = pd.read_csv('target.csv')
                     print(df_tab.columns)
+                    df_tab = df_tab.sort_values(by="KOLASKAR_SCORE", ascending=False)
                     col = ['start', 'end', 'Epitope', 'hla_values', 'KOLASKAR_SCORE']
                     st.header("Final Predicted Cancer Epitopes for MHC-2")
                     st.write("ANALYSIS COMPLETED")
@@ -2910,7 +2932,7 @@ def main():
                     msg['From'] = sender_email
                     msg['To'] = receiver_email
                     msg['subject'] = "Thank you for using our tool"
-                    body = f"FINAL CSV FILE OF FINAL PREDICTED EPITOPES for mhc-2 of {protein_sequence}"
+                    body = f"FINAL CSV FILE OF FINAL PREDICTED EPITOPES for mhc-2 of {protein_sequence} The final prediction is made by selecting the probable epitopes with highest Kolaskar-Tongaonkar (K-T) Scores"
                     msg.attach(MIMEText(body, 'html'))
                     filename = 'final_epitopes.csv'
                     attachment = open(filename, 'rb')
@@ -2928,6 +2950,7 @@ def main():
                     st.header('Email sent')
 
                     st.dataframe(df_tab[col])
+                    st.write("The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores")
                     csv_dt = convert_df_to_csv(df_tab[col])
                     csv_lnk = create_download_link(csv_dt, "final_epitopes.csv", "text/csv")
                     st.markdown(csv_lnk, unsafe_allow_html=True)
@@ -2963,19 +2986,20 @@ def main():
                     df_l = df_l.explode('Epitope').explode('HLA').explode('Start').explode('End').explode(
                         'kolaskar_score')
                     df_l.reset_index(drop=True, inplace=True)
+                    df_tab = df_tab.sort_values(by="kolaskar_score", ascending=False)
                     print(df)
                     clear_catche()
                     st.header("Final Predicted Cancer Epitopes for MHC-2")
                     st.write('These final epitopes are generated with at least 2 of the models predicted them as epitopes')
                     st.write("ANALYSIS COMPLETED")
                     st.dataframe(df_l)
-
+                    st.write("The final prediction is made by selecting the probable epitopes with the highest Kolaskar-Tongaonkar (K-T) Scores")
                     df_l.to_csv("final_epi.csv")
                     msg = MIMEMultipart()
                     msg['From'] = sender_email
                     msg['To'] = receiver_email
                     msg['subject'] = "Thank your for using our tool"
-                    body = f"FINAL CSV FILE OF FINALLY PREDICTED EPITOPES for mhc-2 of sequence given {protein_sequence}"
+                    body = f"FINAL CSV FILE OF FINALLY PREDICTED EPITOPES for mhc-2 of sequence given {protein_sequence} The final prediction is made by selecting the probable epitopes with highest Kolaskar-Tongaonkar (K-T) Scores"
                     msg.attach(MIMEText(body, 'html'))
                     filename = 'final_epi.csv'
                     attachment = open(filename, 'rb')
@@ -3000,13 +3024,17 @@ def main():
     elif page == "About":
         st.title("About Us")
         st.write("""
-    ## About This App
+    ## Motivation
     In the quest to enhance cancer immunotherapy, epitope prediction plays a pivotal role in identifying potential targets for vaccine development. In this study, we present an integrated pipeline comprising three distinct models aimed at epitope prediction and prioritization for cancer immunotherapy. 
 
     ## Contact Information
     If you have any questions or feedback, please feel free to reach out to us:
     - Email: genomicsinsights@gmail.com
 
+
+    ##  Cite
+   
+    Dhanushkumar T, Sunila BG, Sripad Rama Hebbar, Prasanna Kumar Selvam, Karthick Vasudevan. VaxOptiML: Leveraging Machine Learning for Accurate Prediction of MHC-I & II Epitopes for Optimized Cancer Immunotherapy. bioRxiv. 2024 Jun 12:2024-06.
     """)
 
     # Help page content
@@ -3020,7 +3048,7 @@ def main():
     2. Specify the type of MHC requirement (MHC-1 or MHC-2 or both)
     3. The given protein sequence will be chunked into peptides (probable epitopes) and feature of those peptides will be generated.
     4. The input protein sequence features will be extracted and results will be generated
-    5. For more information refer https://github.com/karthick1087/VaxOptiML/blob/main/README.md
+    5. For more information refer https://github.com/Genomicsinsights/VaxOptiML/blob/main/README.md
 
     ## Standalone package 
     Please follow the steps below to use our standalone package. 
